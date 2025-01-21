@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/devanshusurana/Downloads/End-to-End-Chest-Cancer-Classification-using-MLflow-DVC-main/mlruns/0/d7e00e46840f4239b8b47868753fc467/artifacts
+end_time: 1736677793461
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d7e00e46840f4239b8b47868753fc467
+run_name: rogue-donkey-210
+run_uuid: d7e00e46840f4239b8b47868753fc467
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736677772827
+status: 4
+tags: []
+user_id: devanshusurana
