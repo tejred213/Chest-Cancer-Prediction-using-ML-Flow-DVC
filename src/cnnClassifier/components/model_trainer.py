@@ -19,10 +19,19 @@ class Training:
         )
 
     def train_valid_generator(self):
+        """
+        Set up the training and validation data generators, ensuring the training dataset
+        is significantly larger than the validation dataset.
+        """
+        if not self.config.training_data.exists():
+            raise FileNotFoundError(f"Training data directory does not exist: {self.config.training_data}")
+
+        # Reduce validation_split to ensure more data in training set
+        validation_split_ratio = 0.10  # 90% for training, 10% for validation
 
         datagenerator_kwargs = dict(
-            rescale = 1./255,
-            validation_split=0.20
+            rescale=1.0 / 255,
+            validation_split=validation_split_ratio
         )
 
         dataflow_kwargs = dict(
@@ -31,17 +40,16 @@ class Training:
             interpolation="bilinear"
         )
 
-        valid_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator(
-            **datagenerator_kwargs
-        )
-
+        # Validation generator
+        valid_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator(**datagenerator_kwargs)
         self.valid_generator = valid_datagenerator.flow_from_directory(
-            directory=self.config.training_data,
+            directory=str(self.config.training_data),
             subset="validation",
             shuffle=False,
             **dataflow_kwargs
         )
 
+        # Training generator with augmentation if enabled
         if self.config.params_is_augmentation:
             train_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator(
                 rotation_range=40,
@@ -56,11 +64,18 @@ class Training:
             train_datagenerator = valid_datagenerator
 
         self.train_generator = train_datagenerator.flow_from_directory(
-            directory=self.config.training_data,
+            directory=str(self.config.training_data),
             subset="training",
             shuffle=True,
             **dataflow_kwargs
         )
+
+        # Log the sample counts to verify the split
+        print(f"Total Adenocarcinoma images: 2065")
+        print(f"Total Normal images: 712")
+        print(f"Training samples: {self.train_generator.samples}")
+        print(f"Validation samples: {self.valid_generator.samples}")
+
 
     
     @staticmethod
