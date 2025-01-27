@@ -11,7 +11,7 @@ class PredictionPipeline:
 
     def predict(self):
         # Load model
-        model = load_model(os.path.join("model", "model.h5"))
+        model = load_model("/Users/tejasredkar/Developer/Chest-Cancer-Prediction-using-ML-Flow-DVC/artifacts/training/model.h5")
 
         # Load and preprocess image
         imagename = self.filename
